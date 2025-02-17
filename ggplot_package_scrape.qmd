@@ -50,7 +50,7 @@ To find the most current total historical download count, set a target_date of t
 target_date <- Sys.Date()-2
 ```
 
-Retrieve cran download count for each package by looping across package_names and store in a new vector called downloads_count. Directly passing in a package_names vector into cranDownloads function does not work properly. 
+Retrieve cran download count for each package by looping across package_names and store in a new vector called downloads_count. Directly passing in a package_names vector into cranDownloads function does not work properly. Will take a few minutes to complete.
 
 ```{r}
 downloads_count <- numeric(length(package_names))
@@ -178,11 +178,11 @@ all_ggplot_desc <- c(ggplot_descriptions, add_gg_desc)
 Retrieve total historic cran download count for each package using the same method as described above.
 
 ```{r}
-downloads_count <- numeric(length(gg_package_names))
+downloads_count <- numeric(length(all_ggplot_packages))
 
-for (i in seq_along(gg_package_names)) {
+for (i in seq_along(all_ggplot_packages)) {
   dc <- tryCatch(
-    get_total_downloads(gg_package_names[i], target_date),
+    get_total_downloads(all_ggplot_packages[i], target_date),
     error = function(e) NA
   )
   downloads_count[i] <- ifelse(length(dc) == 0, NA, dc)
@@ -192,7 +192,7 @@ for (i in seq_along(gg_package_names)) {
 Save data in new dataframe cran_packages and store as csv file.
 
 ```{r}
-cran_packages <- data.frame(package = gg_package_names, description = gg_descriptions, downloads = downloads_count, CRAN = TRUE)
+cran_packages <- data.frame(package = all_ggplot_packages, description = all_ggplot_desc, downloads = downloads_count, CRAN = TRUE)
 write_csv(cran_packages, "/Users/vivzh/OneDrive/Documents/gg_work/cran_packages.csv")
 ```
 
