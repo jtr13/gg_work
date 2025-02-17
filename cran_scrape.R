@@ -3,7 +3,7 @@ library(rvest)
 library(packageRank)
 library(ggplot2)
 
-df <- read_html("/Users/vivzh/OneDrive/Documents/gg_work/CRAN_ Available Packages By Name.html")
+df <- read_html("https://cran.r-project.org/web/packages/available_packages_by_name.html")
 
 names <- df |>
   html_elements("span.CRAN") |> 
@@ -16,7 +16,7 @@ gg_package_names <- names[gg_start:gg_end]
 head(gg_package_names)
 tail(gg_package_names)
 
-remove_packages <- read.csv("non_ggplot_packages.csv")[[1]]
+remove_packages <- read.csv("raw_data/non_ggplot_packages.csv")[[1]]
 print(remove_packages)
 
 ggplot_package_names <- gg_package_names[!gg_package_names %in% remove_packages]
@@ -41,7 +41,7 @@ gg_descriptions <- desc_gg[c(FALSE, TRUE)]
 head(gg_descriptions)
 tail(gg_descriptions)
 
-remove_desc <- read.csv("non_ggplot_desc.csv")[[1]]
+remove_desc <- read.csv("raw_data/non_ggplot_desc.csv")[[1]]
 print(remove_desc)
 
 ggplot_descriptions <- gg_descriptions[!gg_descriptions %in% remove_desc]
@@ -63,8 +63,8 @@ add_ggplot_desc <- non_gg_desc[gg_indices]
 write_csv(data.frame(names = add_ggplot_names, indices = gg_indices-1), "add_ggplot_names.csv")
 write_csv(data.frame(desc = add_ggplot_desc, indices = gg_indices), "add_ggplot_desc.csv")
 
-add_gg_names <- read.csv("add_ggplot_names.csv")[[1]]
-add_gg_desc <- read.csv("add_ggplot_desc.csv")[[1]]
+add_gg_names <- read.csv("raw_data/add_ggplot_names.csv")[[1]]
+add_gg_desc <- read.csv("raw_data/add_ggplot_desc.csv")[[1]]
 
 all_ggplot_packages <- c(ggplot_package_names, add_gg_names)
 all_ggplot_desc <- c(ggplot_descriptions, add_gg_desc)
@@ -91,5 +91,5 @@ for (i in seq_along(all_ggplot_packages)) {
 downloads_count
 
 cran_packages <- data.frame(package = all_ggplot_packages, description = all_ggplot_desc, downloads = downloads_count, CRAN = TRUE)
-write_csv(cran_packages, "/Users/vivzh/OneDrive/Documents/gg_work/cran_packages.csv")
+write_csv(cran_packages, "generated_data/cran_packages.csv")
 View(cran_packages)
