@@ -3,7 +3,7 @@ library(rvest)
 library(packageRank)
 library(ggplot2)
 
-df <- read_html("/Users/vivzh/ggplot_work/CRAN_ Available Packages By Name.html")
+df <- read_html("/Users/vivzh/OneDrive/Documents/gg_work/CRAN_ Available Packages By Name.html")
 
 names <- df |>
   html_elements("span.CRAN") |> 
@@ -91,5 +91,5 @@ for (i in seq_along(all_ggplot_packages)) {
 downloads_count
 
 cran_packages <- data.frame(package = all_ggplot_packages, description = all_ggplot_desc, downloads = downloads_count, CRAN = TRUE)
-write_csv(cran_packages, "/Users/vivzh/ggplot_work/cran_packages.csv")
+write_csv(cran_packages, "/Users/vivzh/OneDrive/Documents/gg_work/cran_packages.csv")
 View(cran_packages)
