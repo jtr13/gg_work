@@ -3,7 +3,7 @@ library(rvest)
 library(packageRank)
 library(ggplot2)
 
-df <- read_html("/Users/vivzh/OneDrive/Documents/gg_work/exts.ggplot2.tidyverse.org.html")
+df <- read_html("raw_data/exts.ggplot2.tidyverse.org.html")
 
 package_names <- df |>
   html_elements("div.card-content") |> 
@@ -41,19 +41,4 @@ github_stars <- df |>
 github_stars
 
 gallery_packages <- data.frame(package = package_names, stars = github_stars, downloads = downloads_count, gallery = TRUE)
-write_csv(gallery_packages, "/Users/vivzh/OneDrive/Documents/gg_work/gallery_packages.csv")
-View(gallery_packages)
-
-
-p <- ggplot(gallery_packages, aes(x = github_stars, y = downloads)) + 
-  geom_point()
-p
-
-mod <- lm(github_stars ~ downloads, data = gallery_packages)
-summary(mod)
-
-p2 <- p +
-  xlim(0, 750) +
-  ylim(0, 5e5) +
-  geom_smooth(method = 'lm', se = FALSE)
-p2
+write_csv(gallery_packages, "generated_data/gallery_packages.csv")
