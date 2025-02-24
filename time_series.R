@@ -11,3 +11,4 @@ allpackages <- map_dfr(top_packages, time_series)
 
 ggplot(allpackages, aes(x = date, y = count, color = package)) + 
   geom_smooth(se = FALSE, linewidth = .75)
+
